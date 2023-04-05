@@ -6,10 +6,30 @@
         <artifactId>microservice-gestiondeticket</artifactId>
         <groupId>com.dedytech</groupId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>service-common</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <groupId>com.dedytech</groupId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-feign</artifactId>
+            <version>1.4.6.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.4</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
