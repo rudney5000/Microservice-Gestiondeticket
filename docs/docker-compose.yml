@@ -1,7 +1,51 @@
-version: '2'
+version: '3.1'
 
 services:
-  databases:
+  cassandra:
     image: cassandra
     ports:
       - "9042:9042"
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: microservice-gestiondeticket
+    ports:
+      - "3306:3306"
+
+  elasticsearch:
+    image: elasticsearch:6.8.5
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      discovery.type: single-node
+
+  msrabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=dedytech
+      - RABBITMQ_DEFAULT_PASS=dedytech
+
+  dr-kafka:
+    image: spotify/kafka
+    ports:
+      - "2181:2181"
+      - "9092:9092"
+    hostname: localhost
+    container_name: kafka
+    environment:
+      - "ADVERTISED_HOST=localhost"
+      - "ADVERTISED_PORT=9092"
+      - "AUTO_CREATE_TOPICS=true"
+    command: >
+      bash -c
+      "(sleep 15s &&
+      /opt/kafka_2.11-0.10.1.0/bin/kafka-topics.sh
+      --create
+      --zookeeper
+      localhost:2181 --replication-factor 1 --partitions 1
+      --topic dr-topic &) && (supervisord -n)"
